@@ -11,9 +11,11 @@
 
 4. Run php artisan key:generate
 
-5. Run php artisan migrate
+5. Run php artisan db:seed
 
-6. Run php artisan serve
+6. Run php artisan migrate
+
+7. Run php artisan serve
 ```
 
 ### Compiles and hot-reloads for development
