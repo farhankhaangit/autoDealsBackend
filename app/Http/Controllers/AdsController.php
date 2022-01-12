@@ -76,7 +76,7 @@ class AdsController extends Controller
             'contact' => 'required|numeric|digits:11',
             'location' => 'required',
             'price' => 'required|numeric',
-            'title_Image' => 'required',
+            'title_Image' => 'required|image|max:5000',
             'discription' => 'required',
         ]);
         
