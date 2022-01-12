@@ -15,6 +15,7 @@ class CreateAdPostsTable extends Migration
     {
         Schema::create('ad_posts', function (Blueprint $table) {
             $table->id();
+            $table->string('posted_by');
             $table->string('brand');
             $table->string('name');
             $table->string('variant');
@@ -29,6 +30,7 @@ class CreateAdPostsTable extends Migration
             $table->text('discription');
             $table->string('contact');
             $table->string('location');
+            $table->string('Price');
             $table->string('title_image');
             $table->timestamps();
         });
