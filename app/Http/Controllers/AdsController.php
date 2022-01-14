@@ -8,6 +8,7 @@ use App\Models\Feature;
 use App\Models\image;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class AdsController extends Controller
 {
@@ -15,7 +16,17 @@ class AdsController extends Controller
     function deleteAd($id){
         try{
             $record = ad_post::find($id);
+            $title_image = $record->title_image;
+            $imagesList = image::where('ad_post_id', $id)->get();
             $res = $record->delete();
+            
+            Storage::disk("public")->delete($title_image); //delete titile image from storage
+            if(sizeof($imagesList)>1){  // check if it has detail images
+                foreach ($imagesList as $value) {
+                    Storage::disk("public")->delete($value->image); // delete images from storage
+                }
+            }
+
             if($res)
             return response()->json([
                 'status' => true,
@@ -143,18 +154,9 @@ class AdsController extends Controller
         );
         $paths = [];
 
-        //storing other images
+        
 
-        $images = $request->file('other_images');//get images in variable
-        for ($i = 0; $i < sizeof($images); $i++) { // assign unique names to all images
-            $otherImageName = $request->posted_by . "_otherimage_". "_". $i . "_" . time() . "." . $image->getClientOriginalExtension();
-            $iname = $images[$i]->storeAs(
-                "images/detailImages",
-                $otherImageName,
-                "public"
-            );
-            array_push($paths,$iname);
-        }
+        
 
         try {
             $newAd = new ad_post;
@@ -177,6 +179,21 @@ class AdsController extends Controller
             $newAd->discription = $request->discription;
 
             $newAd->save();
+
+            //storing other images
+            
+            $images = $request->file('other_images');//get images in variable
+            for ($i = 0; $i < sizeof($images); $i++) { // assign unique names to all images
+                $otherImageName = $request->posted_by . "_otherimage_". $newAd->id . "_". $i . "_" . time() . "." . $image->getClientOriginalExtension();
+                $iname = $images[$i]->storeAs(
+                    "images/detailImages",
+                    $otherImageName,
+                    "public"
+                );
+                array_push($paths,$iname);
+            }
+
+
             $feature = (explode(",", $request->features));
             if (sizeof($feature) > 0) {
                 for ($i = 0; $i < sizeof($feature); $i++) {
