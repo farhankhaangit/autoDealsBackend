@@ -8,6 +8,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class LoginRegisterController extends Controller
 {
@@ -45,7 +46,12 @@ class LoginRegisterController extends Controller
                 'message' => 'User Registered Successfully',
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                "user" => $user
+                "user" => ['username'=>$user->username,
+                            'name'=>$user->name,
+                            'city'=>$user->city,
+                            'email'=>$user->email,
+                            'contact'=>$user->contact,
+                            'created'=>Carbon::parse($user->created_at)->format('d/m/Y')]
             ], 200);
         }
         catch(Exception){
@@ -89,10 +95,16 @@ class LoginRegisterController extends Controller
                 }
                 $token = $email->createToken('auth_token')->plainTextToken;
                 return response()->json([
-                    "status" => true,
+                    'status' => true,
+                    'message' => 'User Registered Successfully',
                     'access_token' => $token,
                     'token_type' => 'Bearer',
-                    "user" => $email
+                    "user" => ['username'=>$email->username,
+                                'name'=>$email->name,
+                                'city'=>$email->city,
+                                'email'=>$email->email,
+                                'contact'=>$email->contact,
+                                'created'=>Carbon::parse($email->created_at)->format('d/m/Y')]
                 ], 200);
             }
 
@@ -107,10 +119,16 @@ class LoginRegisterController extends Controller
                 }
                 $token = $username->createToken('auth_token')->plainTextToken;
                 return response()->json([
-                    "status" => true,
+                    'status' => true,
+                    'message' => 'User Registered Successfully',
                     'access_token' => $token,
                     'token_type' => 'Bearer',
-                    "user" => $username
+                    "user" => ['username'=>$username->username,
+                                'name'=>$username->name,
+                                'city'=>$username->city,
+                                'email'=>$username->email,
+                                'contact'=>$username->contact,
+                                'created'=>Carbon::parse($username->created_at)->format('d/m/Y')]
                 ], 200);
             }
 

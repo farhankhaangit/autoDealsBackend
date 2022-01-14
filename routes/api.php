@@ -20,8 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('load-ads',[AdsController::class,'loadAds']);
 Route::get('ad-detail/{id}',[AdsController::class,'adDetail']);
+Route::get('user-ads/{username}',[AdsController::class,'loadUserAds']);
+Route::post('save-ad',[AdsController::class,'store']);
+Route::get('delete/{id}',[AdsController::class,'deleteAd']);
 
 Route::post('register',[LoginRegisterController::class,'register']);
 Route::post('login',[LoginRegisterController::class,'login']);
-
-Route::post('save-ad',[AdsController::class,'store']);

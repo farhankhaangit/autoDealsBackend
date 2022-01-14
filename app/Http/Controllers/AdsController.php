@@ -12,13 +12,56 @@ use Illuminate\Support\Facades\Validator;
 class AdsController extends Controller
 {
     //
+    function deleteAd($id){
+        try{
+            $record = ad_post::find($id);
+            $res = $record->delete();
+            if($res)
+            return response()->json([
+                'status' => true,
+                'message' => 'Record Deleted Successfully!'
+            ],200);
+        }
+        catch (Exception $e){
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ],200);
+        }
+    }
     function loadAds()
     {
-        try {
-            return ad_post::select('brand', 'name', 'variant', 'price', 'transmission', 'engine_size', 'location', 'id', 'title_image', 'created_at')->orderBy('created_at', 'desc')->get();
-        } catch (Exception) {
-            return false;
+        try{
+            $data = ad_post::select('brand', 'name', 'variant', 'price', 'transmission', 'engine_size', 'location', 'id', 'title_image', 'created_at')
+            ->orderBy('created_at', 'desc')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $data
+            ],200);
         }
+        catch(Exception $err){
+            return response()->json([
+                'status' => false,
+                'message' => 'Cannot Fetch Data!',
+            ],200);
+        }
+    }
+    function loadUserAds($username){
+        try{
+            $data = ad_post::select('brand', 'name', 'variant', 'price', 'transmission', 'engine_size', 'location', 'id', 'title_image', 'created_at')
+            ->where('posted_by',$username)->orderBy('created_at', 'desc')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $data
+            ],200);
+        }
+        catch(Exception $err){
+            return response()->json([
+                'status' => false,
+                'message' => 'Cannot Fetch Data!',
+            ],200);
+        }
+        
     }
     function adDetail(Request $req)
     {
