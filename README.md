@@ -18,5 +18,7 @@
 7. php artisan storage:link
 
 8. php artisan serve
+
+9. ""Now clone autoDeals repository and run commands provided in autoDeals' readme file""
 ```
 
