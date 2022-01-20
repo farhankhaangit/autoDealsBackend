@@ -183,15 +183,18 @@ class AdsController extends Controller
             //storing other images
             
             $images = $request->file('other_images');//get images in variable
-            for ($i = 0; $i < sizeof($images); $i++) { // assign unique names to all images
-                $otherImageName = $request->posted_by . "_otherimage_". $newAd->id . "_". $i . "_" . time() . "." . $image->getClientOriginalExtension();
-                $iname = $images[$i]->storeAs(
-                    "images/detailImages",
-                    $otherImageName,
-                    "public"
-                );
-                array_push($paths,$iname);
+            if($images){
+                for ($i = 0; $i < sizeof($images); $i++) { // assign unique names to all images
+                    $otherImageName = $request->posted_by . "_otherimage_". $newAd->id . "_". $i . "_" . time() . "." . $image->getClientOriginalExtension();
+                    $iname = $images[$i]->storeAs(
+                        "images/detailImages",
+                        $otherImageName,
+                        "public"
+                    );
+                    array_push($paths,$iname);
+                }
             }
+            
 
 
             $feature = (explode(",", $request->features));
