@@ -30,7 +30,7 @@ class NotificationsController extends Controller
     }
     function getNoti($username){
         try{
-            $data = notification::where('user_name', $username)->orderBy('created_at', 'desc')->get();
+            $data = notification::where('user_name', $username)->orderBy('created_at', 'desc')->take(10)->get();
             return response()->json([
                 "status" => true,
                 "data" => $data
